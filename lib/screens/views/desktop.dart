@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../widgets/button.dart';
+import '../../widgets/carousel.dart';
+import '../../widgets/textbutton.dart';
 import '../product_list.dart';
 
 class HomeDesktop extends StatelessWidget {
@@ -8,101 +12,123 @@ class HomeDesktop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ScrollController _scrollController = ScrollController();
+    final GlobalKey hakkimizdaKey = GlobalKey();
+    final GlobalKey iletisimKey = GlobalKey();
+
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text(
-          'PS3D Store (Desktop)',
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-      body: Stack(
-        children: [
-          // Arka plan resmi
-          Positioned.fill(
-            child: Image.asset(
-              'assets/images/bg2.png',
-              fit: BoxFit.cover,
-              alignment: Alignment.topCenter,
-            ),
-          ),
-          // İçerik
-          SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(
-              vertical: 40.0,
-              horizontal: 80.0,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      backgroundColor: HexColor("#F2F2F2"),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 240),
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+            children: [
+              Container(
+                height: height / 4,
+                width: double.infinity,
+                color: Colors.black,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    const CircleAvatar(
-                      radius: 100,
-                      backgroundImage: AssetImage(
-                        'assets/images/LOGOGUNCEL.png',
-                      ),
+                    CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      radius: 60,
+                      child: Image.asset("assets/images/ps3d2.png"),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        BlurButton(
-                          text: 'Katalog',
-                          onTap: () {
-                            print('Katalog');
+                        HoverUnderlineButton(
+                          text: "Instagram",
+                          onPressed: () async {
+                            final Uri url = Uri.parse(
+                                'https://www.instagram.com/ps3dstore/');
+                            if (await canLaunchUrl(url)) {
+                              await launchUrl(url);
+                            } else {
+                              throw 'URL açılamıyor.';
+                            }
                           },
-                          width: width * 0.2,
                         ),
-                        const SizedBox(height: 10),
-                        BlurButton(
-                          text: 'Instagram',
-                          onTap: () {
-                            print('Hakkımızda');
-                          },
-                          width: width * 0.2,
+                        const SizedBox(
+                          width: 40,
                         ),
-                        const SizedBox(height: 10),
-                        BlurButton(
-                          text: 'Alışveriş',
-                          onTap: () {
-                            print('İletişim');
+                        HoverUnderlineButton(
+                          text: "Shopier",
+                          onPressed: () async {
+                            final Uri url =
+                                Uri.parse('https://www.shopier.com/ps3dmodel');
+                            if (await canLaunchUrl(url)) {
+                              await launchUrl(url);
+                            } else {
+                              throw 'URL açılamıyor.';
+                            }
                           },
-                          width: width * 0.2,
+                        ),
+                        const SizedBox(
+                          width: 40,
+                        ),
+                        HoverUnderlineButton(
+                          text: "Katalog",
+                          onPressed: () {
+                            // Tıklama işlemi
+                          },
+                        ),
+                        const SizedBox(
+                          width: 40,
+                        ),
+                        HoverUnderlineButton(
+                          text: "Hakkımızda",
+                          onPressed: () {
+                            Scrollable.ensureVisible(
+                              hakkimizdaKey.currentContext!,
+                              duration: Duration(seconds: 1),
+                              curve: Curves.easeInOut,
+                            );
+                          },
+                        ),
+                        const SizedBox(
+                          width: 40,
+                        ),
+                        HoverUnderlineButton(
+                          text: "İletişim",
+                          onPressed: () {
+                            Scrollable.ensureVisible(
+                              iletisimKey.currentContext!,
+                              duration: Duration(seconds: 1),
+                              curve: Curves.easeInOut,
+                            );
+                          },
                         ),
                       ],
                     ),
                   ],
                 ),
-                const SizedBox(height: 80),
-
-                // Katalog Başlığı
-                // Katalog Başlığı
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  width: width * 0.6,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+              ),
+              ImageCarousel(),
+              const SizedBox(
+                height: 40,
+              ),
+              Text(
+                "Ürünlerimiz",
+                style: GoogleFonts.poppins(color: Colors.black, fontSize: 42),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              const SizedBox(
+                height: 800,
+                child: SingleChildScrollView(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Center(
-                        child: const Text(
-                          'Katalog',
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Expanded(
                             child: ProductCard(
                               title: 'Captain America',
@@ -114,9 +140,177 @@ class HomeDesktop extends StatelessWidget {
                           SizedBox(width: 20),
                           Expanded(
                             child: ProductCard(
-                              title: 'Iron Man',
+                              title: 'Angel',
                               description: 'Detaylı 3D baskı Iron Man maskesi.',
+                              imagePath: 'assets/images/angel.jpg',
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: ProductCard(
+                              title: 'Abstract Vase',
+                              description:
+                                  'Yüksek kaliteli PLA filament ile üretilmiştir.',
+                              imagePath: 'assets/images/abstract.jpg',
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          Expanded(
+                            child: ProductCard(
+                              title: 'Aslan Buhurdanlık',
+                              description: 'Detaylı 3D baskı Iron Man maskesi.',
+                              imagePath: 'assets/images/aslan.jpg',
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: ProductCard(
+                              title: 'Captain America',
+                              description:
+                                  'Yüksek kaliteli PLA filament ile üretilmiştir.',
                               imagePath: 'assets/images/cap.jpg',
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          Expanded(
+                            child: ProductCard(
+                              title: 'Angel',
+                              description: 'Detaylı 3D baskı Iron Man maskesi.',
+                              imagePath: 'assets/images/angel.jpg',
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: ProductCard(
+                              title: 'Abstract Vase',
+                              description:
+                                  'Yüksek kaliteli PLA filament ile üretilmiştir.',
+                              imagePath: 'assets/images/abstract.jpg',
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          Expanded(
+                            child: ProductCard(
+                              title: 'Aslan Buhurdanlık',
+                              description: 'Detaylı 3D baskı Iron Man maskesi.',
+                              imagePath: 'assets/images/aslan.jpg',
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: ProductCard(
+                              title: 'Abstract Vase',
+                              description:
+                                  'Yüksek kaliteli PLA filament ile üretilmiştir.',
+                              imagePath: 'assets/images/abstract.jpg',
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          Expanded(
+                            child: ProductCard(
+                              title: 'Aslan Buhurdanlık',
+                              description: 'Detaylı 3D baskı Iron Man maskesi.',
+                              imagePath: 'assets/images/aslan.jpg',
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: ProductCard(
+                              title: 'Abstract Vase',
+                              description:
+                                  'Yüksek kaliteli PLA filament ile üretilmiştir.',
+                              imagePath: 'assets/images/abstract.jpg',
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          Expanded(
+                            child: ProductCard(
+                              title: 'Aslan Buhurdanlık',
+                              description: 'Detaylı 3D baskı Iron Man maskesi.',
+                              imagePath: 'assets/images/aslan.jpg',
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: ProductCard(
+                              title: 'Abstract Vase',
+                              description:
+                                  'Yüksek kaliteli PLA filament ile üretilmiştir.',
+                              imagePath: 'assets/images/abstract.jpg',
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          Expanded(
+                            child: ProductCard(
+                              title: 'Aslan Buhurdanlık',
+                              description: 'Detaylı 3D baskı Iron Man maskesi.',
+                              imagePath: 'assets/images/aslan.jpg',
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: ProductCard(
+                              title: 'Abstract Vase',
+                              description:
+                                  'Yüksek kaliteli PLA filament ile üretilmiştir.',
+                              imagePath: 'assets/images/abstract.jpg',
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          Expanded(
+                            child: ProductCard(
+                              title: 'Aslan Buhurdanlık',
+                              description: 'Detaylı 3D baskı Iron Man maskesi.',
+                              imagePath: 'assets/images/aslan.jpg',
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: ProductCard(
+                              title: 'Abstract Vase',
+                              description:
+                                  'Yüksek kaliteli PLA filament ile üretilmiştir.',
+                              imagePath: 'assets/images/abstract.jpg',
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          Expanded(
+                            child: ProductCard(
+                              title: 'Aslan Buhurdanlık',
+                              description: 'Detaylı 3D baskı Iron Man maskesi.',
+                              imagePath: 'assets/images/aslan.jpg',
                             ),
                           ),
                         ],
@@ -124,136 +318,282 @@ class HomeDesktop extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 80),
-                Stack(
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              Container(
+                key: hakkimizdaKey,
+                child: Column(
                   children: [
-                    Positioned(
-                      top: -100,
-                      right: -100,
-                      child: CircleAvatar(
-                        radius: 220,
-                        backgroundImage: AssetImage('assets/images/bale.png'),
+                    Text(
+                      "Hakkımızda",
+                      style: GoogleFonts.poppins(
+                          color: Colors.black, fontSize: 42),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    SizedBox(
+                      height: 300,
+                      child: Text(
+                        "Yaratıcılığın sınırlarını zorluyor, hayalleri gerçeğe dönüştürüyoruz.\nBiz, 3D modelleme ve 3D baskı alanında uzmanlaşmış bir ekip olarak, hem bireysel hem de kurumsal müşterilere özel çözümler sunuyoruz.\nİster evinizin bir köşesini süsleyecek benzersiz dekoratif bir obje,\nister üretim sürecinize hız ve esneklik kazandıracak endüstriyel parçalar olsun — tüm ihtiyaçlarınıza özgün tasarımlar ve kaliteli üretimle cevap veriyoruz.\nKendi atölyemizde, son teknoloji 3D yazıcılarla yüksek hassasiyetli üretimler gerçekleştiriyoruz.\nKişiye özel projeler, özel günler için hediyelikler, markanıza özel figürler ya da teknik prototipler… İhtiyacınıza göre tasarlıyor, modelliyor ve gerçeğe dönüştürüyoruz.\n Aynı zamanda, dijital koleksiyonunuzu genişletebileceğiniz kaliteli 3D model dosyalarının satışını da yapıyoruz.\nMüşterilerimizle birebir iletişim kurmayı, süreci şeffaf bir şekilde yönetmeyi ve beklentilerin ötesine geçmeyi önemsiyoruz.\nBizimle çalışan herkes, sadece bir hizmet değil; bir fikir, bir sanat ve bir deneyim satın alır. Gelin, birlikte hayal edelim ve üç boyutta hayat verelim.",
+                        style: GoogleFonts.montserrat(
+                            fontSize: 19, fontWeight: FontWeight.w600),
                       ),
                     ),
+                    const SizedBox(
+                      height: 40,
+                    ),
                     Container(
-                      padding: const EdgeInsets.all(20),
-                      width: width * 0.6,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.85),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                      key: iletisimKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Hakkımızda',
-                            style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
+                            "İletişim",
+                            style: GoogleFonts.poppins(
+                                color: Colors.black, fontSize: 42),
+                          ),
+                          const SizedBox(height: 30),
+                          Row(
+                            children: [
+                              IconButton(
+                                icon: Image.asset(
+                                  'assets/images/whatsapp.png',
+                                  width: 32,
+                                  height: 32,
+                                ),
+                                onPressed: () async {
+                                  final Uri whatsappUrl =
+                                      Uri.parse('https://wa.me/905452907050');
+                                  if (await canLaunchUrl(whatsappUrl)) {
+                                    await launchUrl(whatsappUrl,
+                                        mode: LaunchMode.externalApplication);
+                                  } else {
+                                    throw 'WhatsApp açılamıyor.';
+                                  }
+                                },
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                '+90 545 290 70 50',
+                                style: GoogleFonts.montserrat(fontSize: 18),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            children: [
+                              Icon(Icons.email, color: Colors.black),
+                              const SizedBox(width: 10),
+                              Text(
+                                'ps3dmodel@gmail.com',
+                                style: GoogleFonts.montserrat(fontSize: 18),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            children: [
+                              Icon(Icons.camera_alt_outlined,
+                                  color: Colors.black),
+                              const SizedBox(width: 10),
+                              GestureDetector(
+                                onTap: () async {
+                                  final Uri instaUrl = Uri.parse(
+                                      'https://www.instagram.com/ps3dstore/');
+                                  if (await canLaunchUrl(instaUrl)) {
+                                    await launchUrl(instaUrl,
+                                        mode: LaunchMode.externalApplication);
+                                  }
+                                },
+                                child: Text(
+                                  'instagram.com/ps3dstore',
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 18,
+                                      decoration: TextDecoration.underline),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Footer section starts here
+                    const SizedBox(height: 40),
+                    Container(
+                      width: double.infinity,
+                      color: Colors.black,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 40, horizontal: 60),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Image.asset(
+                                      "assets/images/ps3d2.png",
+                                      width: 100,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      "PS3D ile hayal ettiğiniz tasarımlar gerçeğe dönüşür. 3D modelleme ve baskı hizmetlerimizle her projeye özel çözümler sunuyoruz.",
+                                      style: GoogleFonts.montserrat(
+                                        color: Colors.white70,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Hızlı Linkler",
+                                      style: GoogleFonts.montserrat(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    GestureDetector(
+                                        onTap: () async {
+                                          final Uri url = Uri.parse(
+                                              'https://www.instagram.com/ps3dstore/');
+                                          if (await canLaunchUrl(url)) {
+                                            await launchUrl(url);
+                                          } else {
+                                            throw 'URL açılamıyor.';
+                                          }
+                                        },
+                                        child: Text("Instagram",
+                                            style: GoogleFonts.montserrat(
+                                                color: Colors.white70))),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        final Uri url = Uri.parse(
+                                            'https://www.shopier.com/ps3dmodel');
+                                        if (await canLaunchUrl(url)) {
+                                          await launchUrl(url);
+                                        } else {
+                                          throw 'URL açılamıyor.';
+                                        }
+                                      },
+                                      child: Text("Shopier",
+                                          style: GoogleFonts.montserrat(
+                                              color: Colors.white70)),
+                                    ),
+                                   
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "İletişim",
+                                      style: GoogleFonts.montserrat(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Row(
+                                      children: [
+                                        Icon(Icons.phone,
+                                            color: Colors.white70, size: 16),
+                                        const SizedBox(width: 8),
+                                        Text("+90 545 290 70 50",
+                                            style: GoogleFonts.montserrat(
+                                                color: Colors.white70)),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Row(
+                                      children: [
+                                        Icon(Icons.email,
+                                            color: Colors.white70, size: 16),
+                                        const SizedBox(width: 8),
+                                        Text("ps3dmodel@gmail.com",
+                                            style: GoogleFonts.montserrat(
+                                                color: Colors.white70)),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Row(
+                                      children: [
+                                        Icon(Icons.camera_alt,
+                                            color: Colors.white70, size: 16),
+                                        const SizedBox(width: 8),
+                                        Text("instagram.com/ps3dstore",
+                                            style: GoogleFonts.montserrat(
+                                                color: Colors.white70)),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 30),
+                          Divider(color: Colors.white24),
+                          const SizedBox(height: 10),
+                           Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Center(
+                            child: Text(
+                              "© 2025 PS3D - Tüm hakları saklıdır.",
+                              style: GoogleFonts.montserrat(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
                             ),
                           ),
-                          SizedBox(height: 12),
-                          Text.rich(
-                            TextSpan(
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black87,
-                                height: 1.5,
-                              ),
+                          const SizedBox(height: 10),
+                          Center(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                TextSpan(
-                                  text:
-                                      'PS3D Store, 3 boyutlu tasarım ve üretim alanında uzmanlaşmış bir markadır. Solid modelleme teknolojisi kullanarak; hayal ettiğiniz her nesneyi, dijital ortamdan fiziksel dünyaya taşıyoruz. Kalite, yaratıcılık ve müşteri memnuniyeti bizim için yalnızca değer değil, aynı zamanda çalışma prensibidir.\n\n',
+                                // If you have the Flutter logo asset, use the following line:
+                                // Image.asset(
+                                //   'assets/images/flutter_logo.png',
+                                //   width: 20,
+                                //   height: 20,
+                                // ),
+                                // Otherwise, use the Flutter Dash icon:
+                                Icon(Icons.flutter_dash, color: Colors.white, size: 20),
+                                const SizedBox(width: 8),
+                                Text(
+                                  "Built with Flutter",
                                   style: GoogleFonts.montserrat(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: '🧱 Yüksek Kalite & Detaylı İşçilik\n',
-                                  style: GoogleFonts.montserrat(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text:
-                                      'Kullandığımız malzemeler ve baskı teknolojileri en üst düzeydedir. Her bir ürünümüz, milimetrik hassasiyetle tasarlanır ve üretim sürecinde birçok kalite kontrol aşamasından geçer.\n\n',
-                                  style: GoogleFonts.montserrat(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: '🧙‍♂️ Cosplay Tutkunlarına Özel\n',
-                                  style: GoogleFonts.montserrat(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text:
-                                      'Oyun, anime veya film karakterlerinin ekipmanları, zırhları, silahları ya da aksesuarları… Cosplay için gereken en dikkat çekici objeleri gerçeğe en yakın şekilde üretiriz.\n\n',
-                                  style: GoogleFonts.montserrat(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: '🎁 Kişiye Özel Hediyelikler\n',
-                                  style: GoogleFonts.montserrat(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text:
-                                      'Doğum günü, yıl dönümü veya özel günler için tasarlanmış, tamamen size özel 3D hediyelik ürünler hazırlıyoruz. Her biri, benzersiz ve unutulmaz bir deneyim sunar.\n\n',
-                                  style: GoogleFonts.montserrat(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: '🏭 Toplu Sipariş Desteği\n',
-                                  style: GoogleFonts.montserrat(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text:
-                                      'Kurumsal firmalar veya organizasyonlar için özel tasarımlı, çok adetli üretim projelerini de başarıyla yürütüyoruz. Her ölçekte talebinize uygun çözümler geliştiriyoruz.\n\n',
-                                  style: GoogleFonts.montserrat(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: '🤝 Müşteri Memnuniyeti Odaklı\n',
-                                  style: GoogleFonts.montserrat(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text:
-                                      'İşin başından sonuna kadar iletişimdeyiz. İsteklerinizi dikkatle dinler, sürece sizi de dahil ederiz. Size özel bir ürün ortaya çıkması için titizlikle çalışırız.\n\n',
-                                  style: GoogleFonts.montserrat(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text:
-                                      'Kısacası; PS3D Store, sıradanı değil özel olanı üretir.\nHayal etmeniz yeterli, biz onu modelleyip hayat veririz.',
-                                  style: GoogleFonts.montserrat(
-                                    color: Colors.black,
+                                    color: Colors.white60,
+                                    fontSize: 13,
                                   ),
                                 ),
                               ],
                             ),
-                            textAlign: TextAlign.justify,
                           ),
+                        ],
+                      ),
                         ],
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

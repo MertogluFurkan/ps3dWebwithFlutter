@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProductCard extends StatelessWidget {
   final String title;
@@ -34,21 +35,71 @@ class ProductCard extends StatelessWidget {
                       onTap: () {
                         showDialog(
                           context: context,
-                          builder:
-                              (_) => Dialog(
-                                backgroundColor: Colors.transparent,
-                                child: Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Image.asset(
-                                    imagePath,
-                                    fit: BoxFit.contain,
-                                  ),
-                                ),
+                          builder: (context) {
+                            return Dialog(
+                              backgroundColor: Colors.white,
+                              insetPadding: const EdgeInsets.all(
+                                  40), // Ekran kenar boşlukları
+                              child: LayoutBuilder(
+                                builder: (context, constraints) {
+                                  return Container(
+                                    width: constraints.maxWidth * 0.8,
+                                    height: constraints.maxHeight * 0.8,
+                                    padding: const EdgeInsets.all(24),
+                                    child: Row(
+                                      children: [
+                                        /// GÖRSEL
+                                        Expanded(
+                                          flex: 5,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              image: DecorationImage(
+                                                image: AssetImage(imagePath),
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        const SizedBox(width: 30),
+
+                                        /// AÇIKLAMA
+                                        Expanded(
+                                          flex: 4,
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  title,
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 28,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 20),
+                                                Text(
+                                                  description,
+                                                  style: GoogleFonts.montserrat(
+                                                    fontSize: 16,
+                                                    color: Colors.black87,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
                               ),
+                            );
+                          },
                         );
                       },
                       child: Stack(
