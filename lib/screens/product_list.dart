@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProductCard extends StatelessWidget {
   final String title;
   final String description;
   final String imagePath;
+  final String? link;
 
   const ProductCard({
     super.key,
     required this.title,
     required this.description,
     required this.imagePath,
+    this.link,
   });
 
   @override
@@ -33,74 +36,8 @@ class ProductCard extends StatelessWidget {
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
                       onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                              backgroundColor: Colors.white,
-                              insetPadding: const EdgeInsets.all(
-                                  40), // Ekran kenar boşlukları
-                              child: LayoutBuilder(
-                                builder: (context, constraints) {
-                                  return Container(
-                                    width: constraints.maxWidth * 0.8,
-                                    height: constraints.maxHeight * 0.8,
-                                    padding: const EdgeInsets.all(24),
-                                    child: Row(
-                                      children: [
-                                        /// GÖRSEL
-                                        Expanded(
-                                          flex: 5,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              image: DecorationImage(
-                                                image: AssetImage(imagePath),
-                                                fit: BoxFit.contain,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-
-                                        const SizedBox(width: 30),
-
-                                        /// AÇIKLAMA
-                                        Expanded(
-                                          flex: 4,
-                                          child: SingleChildScrollView(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  title,
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 28,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 20),
-                                                Text(
-                                                  description,
-                                                  style: GoogleFonts.montserrat(
-                                                    fontSize: 16,
-                                                    color: Colors.black87,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                        );
+                        showProductDetailsDialog(
+                            context, title, description, imagePath, link);
                       },
                       child: Stack(
                         children: [
@@ -129,38 +66,159 @@ class ProductCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 20),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(description, style: const TextStyle(fontSize: 14)),
-                      const SizedBox(height: 8),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: const Text(
-                          'Güncel fiyatlar için Shopier mağazamızı ziyaret edin.\nToplu alımlarda %20 indirim uygulanır.',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.deepOrange,
+                  child: SizedBox(
+                    height: 150,
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                title,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                description.length > 60
+                                    ? '${description.substring(0, 60)}...'
+                                    : description,
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                    ],
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: () {
+                              showProductDetailsDialog(
+                                  context, title, description, imagePath, link);
+                            },
+                            child: const Text(
+                              'Detayı Görüntüle',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.deepOrange,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
           ),
         ),
-        const Divider(height: 40),
+        const SizedBox(height: 20),
       ],
+    );
+  }
+
+  void showProductDetailsDialog(BuildContext context, String title,
+      String description, String imagePath, String? link) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          insetPadding: const EdgeInsets.all(40),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Container(
+                width: constraints.maxWidth * 0.8,
+                height: constraints.maxHeight * 0.8,
+                padding: const EdgeInsets.all(24),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          image: DecorationImage(
+                            image: AssetImage(imagePath),
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 30),
+                    Expanded(
+                      flex: 4,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    title,
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Text(
+                                    description,
+                                    style: GoogleFonts.montserrat(
+                                      fontSize: 16,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: ElevatedButton.icon(
+                              style: ButtonStyle(
+                                shape: WidgetStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                ),
+                                backgroundColor:
+                                    WidgetStateProperty.all(Colors.black),
+                              ),
+                              label: Text(
+                                'Satın Al',
+                                style: GoogleFonts.poppins(color: Colors.white),
+                              ),
+                              icon: const Icon(
+                                Icons.shopping_cart,
+                                color: Colors.white,
+                              ),
+                              onPressed: () async {
+                                final Uri url = Uri.parse(link.toString());
+                                if (await canLaunchUrl(url)) {
+                                  await launchUrl(url);
+                                } else {
+                                  throw 'URL açılamıyor.';
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

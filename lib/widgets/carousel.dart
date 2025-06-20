@@ -8,6 +8,8 @@ class ImageCarousel extends StatelessWidget {
     'assets/images/orumcek.png',
   ];
 
+  ImageCarousel({super.key});
+
   @override
   Widget build(BuildContext context) {
     return CarouselSlider(
@@ -15,7 +17,9 @@ class ImageCarousel extends StatelessWidget {
         return Builder(
           builder: (BuildContext context) {
             return ClipRRect(
-              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(12),bottomRight: Radius.circular(12)),
+              borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(12),
+                  bottomRight: Radius.circular(12)),
               child: Image.asset(
                 path,
                 fit: BoxFit.cover,
@@ -26,13 +30,12 @@ class ImageCarousel extends StatelessWidget {
         );
       }).toList(),
       options: CarouselOptions(
-        
         height: 400,
         autoPlay: true,
         enlargeCenterPage: true,
         viewportFraction: 1,
         aspectRatio: 16 / 9,
-        autoPlayInterval: Duration(seconds: 2),
+        autoPlayInterval: const Duration(seconds: 2),
       ),
     );
   }
