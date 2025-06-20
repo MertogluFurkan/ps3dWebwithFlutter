@@ -1,6 +1,6 @@
 {
-    "name": "web_ps3d",
-    "short_name": "web_ps3d",
+    "name": "ps3dweb",
+    "short_name": "ps3dweb",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
