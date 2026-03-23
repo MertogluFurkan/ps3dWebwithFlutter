@@ -97,7 +97,11 @@ class _SectionWrapper extends StatelessWidget {
       key: sectionKey,
       width: double.infinity,
       padding: EdgeInsets.symmetric(
-        horizontal: isMobile ? 20 : Responsive.isTablet(context) ? 40 : 80,
+        horizontal: isMobile
+            ? 20
+            : Responsive.isTablet(context)
+                ? 40
+                : 80,
         vertical: 72,
       ),
       child: child,
@@ -182,7 +186,7 @@ class _ProductsSection extends StatelessWidget {
             crossAxisCount: crossAxisCount,
             mainAxisSpacing: 20,
             crossAxisSpacing: 20,
-            childAspectRatio: Responsive.isMobile(context) ? 0.78 : 0.72,
+            childAspectRatio: Responsive.isMobile(context) ? 0.62 : 0.72,
           ),
           itemBuilder: (_, i) => ProductCard(product: products[i]),
         ),
@@ -205,7 +209,6 @@ class _ProductsSection extends StatelessWidget {
 
 // ─── About section ─────────────────────────────────────────────────────────────
 class _AboutSection extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     final isDesktop = Responsive.isDesktop(context);
@@ -281,10 +284,26 @@ class _AboutVisual extends StatelessWidget {
 
 class _FeatureRow extends StatelessWidget {
   static const _features = [
-    ('Premium Kalite', 'Yüksek kaliteli PLA ve PETG filamentler', Icons.verified_outlined),
-    ('Özel Tasarım', 'Kişiye özel 3D modelleme hizmeti', Icons.design_services_outlined),
-    ('Hızlı Teslimat', 'Siparişleriniz özenle paketlenerek gönderilir', Icons.local_shipping_outlined),
-    ('Toplu İndirim', 'Toplu alımlarda %20 indirim uygulanır', Icons.discount_outlined),
+    (
+      'Premium Kalite',
+      'Yüksek kaliteli PLA ve PETG filamentler',
+      Icons.verified_outlined
+    ),
+    (
+      'Özel Tasarım',
+      'Kişiye özel 3D modelleme hizmeti',
+      Icons.design_services_outlined
+    ),
+    (
+      'Hızlı Teslimat',
+      'Siparişleriniz özenle paketlenerek gönderilir',
+      Icons.local_shipping_outlined
+    ),
+    (
+      'Toplu İndirim',
+      'Toplu alımlarda %20 indirim uygulanır',
+      Icons.discount_outlined
+    ),
   ];
 
   @override
@@ -324,8 +343,7 @@ class _FeatureCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFF141414),
         borderRadius: BorderRadius.circular(12),
-        border:
-            Border.all(color: const Color(0xFFC9A84C).withOpacity(0.15)),
+        border: Border.all(color: const Color(0xFFC9A84C).withOpacity(0.15)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -371,57 +389,60 @@ class _ContactSection extends StatelessWidget {
         ),
         const SizedBox(height: 40),
         isDesktop
-            ? Row(
+            ? const Row(
                 children: [
-                  Expanded(child: _ContactCard(
+                  Expanded(
+                      child: _ContactCard(
                     icon: Icons.phone_outlined,
                     title: 'WhatsApp',
                     value: '+90 545 290 70 50',
                     url: 'https://wa.me/905452907050',
-                    iconColor: const Color(0xFF25D366),
+                    iconColor: Color(0xFF25D366),
                   )),
-                  const SizedBox(width: 20),
-                  Expanded(child: _ContactCard(
+                  SizedBox(width: 20),
+                  Expanded(
+                      child: _ContactCard(
                     icon: Icons.email_outlined,
                     title: 'E-Posta',
                     value: 'ps3dmodel@gmail.com',
                     url: 'mailto:ps3dmodel@gmail.com',
-                    iconColor: const Color(0xFFC9A84C),
+                    iconColor: Color(0xFFC9A84C),
                   )),
-                  const SizedBox(width: 20),
-                  Expanded(child: _ContactCard(
+                  SizedBox(width: 20),
+                  Expanded(
+                      child: _ContactCard(
                     icon: Icons.camera_alt_outlined,
                     title: 'Instagram',
                     value: '@ps3dstore',
                     url: 'https://www.instagram.com/ps3dstore/',
-                    iconColor: const Color(0xFFE1306C),
+                    iconColor: Color(0xFFE1306C),
                   )),
                 ],
               )
-            : Column(
+            : const Column(
                 children: [
                   _ContactCard(
                     icon: Icons.phone_outlined,
                     title: 'WhatsApp',
                     value: '+90 545 290 70 50',
                     url: 'https://wa.me/905452907050',
-                    iconColor: const Color(0xFF25D366),
+                    iconColor: Color(0xFF25D366),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   _ContactCard(
                     icon: Icons.email_outlined,
                     title: 'E-Posta',
                     value: 'ps3dmodel@gmail.com',
                     url: 'mailto:ps3dmodel@gmail.com',
-                    iconColor: const Color(0xFFC9A84C),
+                    iconColor: Color(0xFFC9A84C),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   _ContactCard(
                     icon: Icons.camera_alt_outlined,
                     title: 'Instagram',
                     value: '@ps3dstore',
                     url: 'https://www.instagram.com/ps3dstore/',
-                    iconColor: const Color(0xFFE1306C),
+                    iconColor: Color(0xFFE1306C),
                   ),
                 ],
               ),
@@ -469,9 +490,7 @@ class _ContactCardState extends State<_ContactCard> {
           duration: const Duration(milliseconds: 250),
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: _hovered
-                ? const Color(0xFF1C1C1C)
-                : const Color(0xFF141414),
+            color: _hovered ? const Color(0xFF1C1C1C) : const Color(0xFF141414),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: _hovered
@@ -523,7 +542,7 @@ class _ContactCardState extends State<_ContactCard> {
                 ],
               ),
               const Spacer(),
-              Icon(
+              const Icon(
                 Icons.arrow_forward_ios,
                 color: Colors.white24,
                 size: 14,
@@ -560,12 +579,9 @@ class _GoldOutlineButtonState extends State<_GoldOutlineButton> {
         onTap: widget.onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding:
-              const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
           decoration: BoxDecoration(
-            color: _hovered
-                ? const Color(0xFFC9A84C)
-                : Colors.transparent,
+            color: _hovered ? const Color(0xFFC9A84C) : Colors.transparent,
             border: Border.all(color: const Color(0xFFC9A84C)),
             borderRadius: BorderRadius.circular(4),
           ),

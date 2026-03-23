@@ -1,4 +1,3 @@
-
 // Replaced by lib/screens/home_screen.dart
 
 import 'package:flutter/material.dart';
@@ -104,7 +103,7 @@ class HomeDesktop extends StatelessWidget {
                   ],
                 ),
               ),
-              ImageCarousel(),
+              const HeroCarousel(),
               const SizedBox(
                 height: 40,
               ),

@@ -181,14 +181,20 @@ class HomeMobile extends StatelessWidget {
                     await launchUrl(url);
                   }
                 },
+                // SONRA (düzeltilmiş)
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "Daha fazla ürün için katalogumuza göz atın",
-                      style: GoogleFonts.montserrat(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
+                    Flexible(
+                      child: Text(
+                        "Daha fazla ürün için katalogumuza göz atın",
+                        style: GoogleFonts.montserrat(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
                       ),
                     ),
                     const SizedBox(width: 8),

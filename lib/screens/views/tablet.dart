@@ -88,7 +88,7 @@ class HomeTablet extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              ImageCarousel(),
+              const HeroCarousel(),
               const SizedBox(height: 40),
               Text(
                 "Ürünlerimiz",
