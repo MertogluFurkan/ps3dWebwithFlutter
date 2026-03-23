@@ -1,16 +1,28 @@
 # ps3dweb
 
-A new Flutter project.
+# 🕹️ ps3dWebwithFlutter
 
-## Getting Started
+A 3D  UI built using Flutter for the web. This project showcases a modern, responsive and interactive interface inspired by the classic PlayStation 3 dashboard experience — built entirely with Flutter’s powerful UI toolkit.
 
-This project is a starting point for a Flutter application.
+## ✨ Features
 
-A few resources to get you started if this is your first Flutter project:
+- 🎮 3D card animations with perspective
+- ⚡ Smooth transitions and hover effects
+- 📱 Responsive layout (web/tablet/desktop)
+- 💻 Built entirely with Flutter for Web
+- 🎨 Inspired by PS3 XMB interface
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🚀 Getting Started
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Requirements
+
+- Flutter SDK (3.0 or higher)
+- Chrome or any modern web browser
+
+### Clone & Run
+
+```bash
+git clone https://github.com/MertogluFurkan/ps3dWebwithFlutter.git
+cd ps3dWebwithFlutter
+flutter pub get
+flutter run -d chrome

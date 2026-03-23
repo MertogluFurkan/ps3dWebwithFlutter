@@ -32,17 +32,16 @@ class _HoverUnderlineButtonState extends State<HoverUnderlineButton> {
             Text(
               widget.text,
               style: GoogleFonts.montserrat(
-                fontSize: 14,
-                color: Colors.white,
-                fontWeight: FontWeight.bold
-              ),
+                  fontSize: 14,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
             ),
             AnimatedContainer(
-              duration: Duration(milliseconds: 250),
+              duration: const Duration(milliseconds: 250),
               height: 2.5, // Çizgi kalınlığı
               width: _isHovered ? 50 : 0, // Hover olduğunda genişliği aç
               color: Colors.white,
-              margin: EdgeInsets.only(top: 4),
+              margin: const EdgeInsets.only(top: 4),
               curve: Curves.easeInOut,
             ),
           ],
